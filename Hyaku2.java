@@ -1,5 +1,6 @@
-import java.util.Random;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Hyaku2{
 	public static void main(String[] args){
@@ -20,48 +21,37 @@ public class Hyaku2{
 			{"君がため惜しからざりし命さへ", "長くもがなと思ひけるかな"},
 		};
 
-		int[] array = new int[word.length];
-		for (int i = 0; i < array.length; i++) {
-			array[i] = i;
+		ArrayList<Integer> kaminoku_list = new ArrayList<>();  // indexes
+		ArrayList<Integer> simonoku_list = new ArrayList<>();
+		for (int i = 0; i < word.length; i++) {
+			kaminoku_list.add(i);
+			simonoku_list.add(i);
 		}
-		int[] check = new int[word.length];
-		for (int i = 0; i < check.length; i++) {
-			check[i] = i;
-		}
-
 		Scanner stdIn = new Scanner(System.in);
 
 		while(true){
-			shuffle(array, array.length);
-			shuffle(check, check.length);
-			for(int i = 0; i < array.length; i++){
-				for (int j = 0; j < check.length; j++) {
-					System.out.println(j+word[check[j]][1]);
+			Collections.shuffle(kaminoku_list);
+			Collections.shuffle(simonoku_list);
+
+
+			for (int kaminoku : kaminoku_list) {
+				int i = 0;
+				for (int simonoku : simonoku_list) {
+					System.out.printf("%2d %s\n", i, word[simonoku][1]);
+					i++;
 				}
-				System.out.println(word[array[i]][0]);
+				System.out.println(word[kaminoku][0]);
+
 				int input = stdIn.nextInt();
-				if (array[i] == check[input]) {
+				if (kaminoku == simonoku_list.get(input)) {
 					System.out.println("正解");
-				}else{
+				}
+				else {
 					System.out.println("不正解");
 				}
-				System.out.println(word[array[i]][0]+" "+word[array[i]][1]+"\n");
+				System.out.println(word[kaminoku][0]+" "+word[kaminoku][1]+"\n");
 			}
 			System.out.println("LOOP");
-		}
-	}
-
-	public static void shuffle(int[] array, int times){
-		Random rand = new Random();
-		for (int i = 0; i < times; i++) {
-			int j = rand.nextInt(array.length);
-            int k = j;
-            while(k == j){
-                j = rand.nextInt(array.length);
-            }
-            int buffer = array[j];
-            array[j] = array[k];
-            array[k] = buffer;
 		}
 	}
 }
